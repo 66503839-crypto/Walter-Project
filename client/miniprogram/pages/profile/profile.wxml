@@ -1,0 +1,22 @@
+<view class="page">
+  <view class="profile card" wx:if="{{user}}">
+    <image
+      class="avatar"
+      src="{{user.avatar || '/images/default-avatar.png'}}"
+      mode="aspectFill"
+    />
+    <view class="info">
+      <view class="nickname">{{user.nickname || '微信用户'}}</view>
+      <view class="muted">ID: {{user.id}}</view>
+      <view class="muted openid">openid: {{user.openid}}</view>
+    </view>
+  </view>
+
+  <view wx:else class="card">
+    <view class="muted">未登录</view>
+  </view>
+
+  <view class="btn-primary" bindtap="onRelogin">重新登录</view>
+  <view class="gap"></view>
+  <view class="btn-primary btn-danger" bindtap="onLogout">退出登录</view>
+</view>

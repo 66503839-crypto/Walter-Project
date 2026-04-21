@@ -1,0 +1,28 @@
+# 开发环境：只起 PostgreSQL + Redis，服务端在宿主机跑以便热重载
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: minigamer-pg-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: minigamer
+      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: minigamer
+      TZ: Asia/Shanghai
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data-dev:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: minigamer-redis-dev
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data-dev:/data
+
+volumes:
+  pg-data-dev:
+  redis-data-dev:

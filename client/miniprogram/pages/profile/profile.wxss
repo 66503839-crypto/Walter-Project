@@ -1,0 +1,30 @@
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+.avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: #eee;
+  flex-shrink: 0;
+}
+.info {
+  flex: 1;
+  overflow: hidden;
+}
+.nickname {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 8rpx;
+}
+.openid {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gap {
+  height: 24rpx;
+}

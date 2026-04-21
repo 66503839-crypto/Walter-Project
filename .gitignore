@@ -1,0 +1,59 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ===== Node / 小程序 =====
+node_modules/
+npm-debug.log
+yarn-error.log
+pnpm-lock.yaml
+.miniprogram-cache/
+miniprogram_npm/
+
+# ===== TypeScript =====
+*.tsbuildinfo
+client/dist/
+
+# ===== IDE =====
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===== 系统 =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== 环境与密钥 =====
+.env
+.env.local
+.env.*.local
+deploy/.env
+deploy/*.local
+*.pem
+*.key
+secrets/
+
+# ===== 日志与数据 =====
+*.log
+logs/
+data/
+postgres-data/
+redis-data/
+uploads/
+
+# ===== Docker =====
+*.pid

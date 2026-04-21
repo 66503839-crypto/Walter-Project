@@ -1,0 +1,38 @@
+.hero {
+  padding: 48rpx 32rpx;
+  background: linear-gradient(135deg, #1296db, #0078a8);
+  color: #fff;
+  border-radius: 20rpx;
+  margin-bottom: 32rpx;
+}
+.hero-title {
+  font-size: 44rpx;
+  font-weight: 700;
+}
+.hero-sub {
+  margin-top: 12rpx;
+  font-size: 28rpx;
+  opacity: 0.85;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+}
+.feature-icon {
+  font-size: 56rpx;
+  margin-right: 24rpx;
+}
+.feature-body {
+  flex: 1;
+}
+.feature-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 6rpx;
+}
+.feature-arrow {
+  font-size: 48rpx;
+  color: #ccc;
+}

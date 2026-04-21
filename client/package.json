@@ -1,0 +1,12 @@
+{
+  "name": "minigamer-client",
+  "version": "0.1.0",
+  "description": "MiniGamer 微信小程序客户端",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "miniprogram-api-typings": "^4.0.2"
+  }
+}

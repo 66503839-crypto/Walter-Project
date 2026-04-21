@@ -1,0 +1,31 @@
+<view class="page">
+  <view class="input-row card">
+    <input
+      class="input"
+      placeholder="添加一个待办..."
+      value="{{inputTitle}}"
+      bindinput="onInput"
+      confirm-type="done"
+      bindconfirm="onAdd"
+    />
+    <view class="btn-primary add-btn" bindtap="onAdd">添加</view>
+  </view>
+
+  <view wx:if="{{todos.length === 0 && !loading}}" class="empty muted">
+    还没有待办，添加一个吧！
+  </view>
+
+  <view wx:for="{{todos}}" wx:key="id" class="todo card {{item.done ? 'done' : ''}}">
+    <view
+      class="checkbox {{item.done ? 'checked' : ''}}"
+      data-id="{{item.id}}"
+      data-done="{{item.done}}"
+      bindtap="onToggle"
+    >{{item.done ? '✓' : ''}}</view>
+    <view class="todo-body">
+      <view class="todo-title">{{item.title}}</view>
+      <view class="muted" wx:if="{{item.content}}">{{item.content}}</view>
+    </view>
+    <view class="delete" data-id="{{item.id}}" bindtap="onDelete">×</view>
+  </view>
+</view>

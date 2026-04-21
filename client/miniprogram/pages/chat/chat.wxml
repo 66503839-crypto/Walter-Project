@@ -1,0 +1,38 @@
+<view class="chat-wrap">
+  <scroll-view
+    class="chat-list"
+    scroll-y
+    scroll-into-view="{{scrollToId}}"
+    scroll-with-animation
+  >
+    <view wx:if="{{messages.length === 0}}" class="empty muted">
+      开始和 AI 聊点什么吧...
+    </view>
+
+    <view
+      wx:for="{{messages}}"
+      wx:key="id"
+      id="{{item.id}}"
+      class="msg msg-{{item.role}}"
+    >
+      <view class="bubble">{{item.content}}</view>
+    </view>
+
+    <view wx:if="{{sending}}" class="msg msg-assistant">
+      <view class="bubble typing">AI 正在思考...</view>
+    </view>
+  </scroll-view>
+
+  <view class="input-bar">
+    <input
+      class="input"
+      placeholder="请输入..."
+      value="{{input}}"
+      bindinput="onInput"
+      confirm-type="send"
+      bindconfirm="onSend"
+      disabled="{{sending}}"
+    />
+    <view class="btn-primary send-btn" bindtap="onSend">发送</view>
+  </view>
+</view>

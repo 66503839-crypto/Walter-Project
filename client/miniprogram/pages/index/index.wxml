@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-title">你好，{{nickname}} 👋</view>
+    <view class="hero-sub">欢迎使用 MiniGamer · 你的微信小程序助手</view>
+  </view>
+
+  <view class="feature-list">
+    <view
+      class="feature card"
+      wx:for="{{features}}"
+      wx:key="title"
+      data-path="{{item.path}}"
+      bindtap="goTo"
+    >
+      <view class="feature-icon">{{item.icon}}</view>
+      <view class="feature-body">
+        <view class="feature-title">{{item.title}}</view>
+        <view class="muted">{{item.desc}}</view>
+      </view>
+      <view class="feature-arrow">›</view>
+    </view>
+  </view>
+</view>
