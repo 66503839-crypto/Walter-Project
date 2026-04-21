@@ -54,6 +54,10 @@ data/
 postgres-data/
 redis-data/
 uploads/
+*.db
+*.sqlite
+*.sqlite3
+server/minigamer.db
 
 # ===== Docker =====
 *.pid
