@@ -25,6 +25,20 @@ export function getMe() {
   return request<App.UserInfo>({ url: '/users/me' });
 }
 
+export interface UserUpdatePayload {
+  nickname?: string;
+  avatar?: string;
+  preferred_provider?: string;
+}
+
+export function updateMe(payload: UserUpdatePayload) {
+  return request<App.UserInfo>({
+    url: '/users/me',
+    method: 'PATCH',
+    data: payload,
+  });
+}
+
 export async function ensureLoggedIn(): Promise<App.UserInfo> {
   const stored = wx.getStorageSync(STORAGE_KEYS.USER);
   if (stored) return stored as App.UserInfo;

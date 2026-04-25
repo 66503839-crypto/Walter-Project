@@ -6,7 +6,8 @@
  * 切环境时改下方的 API_BASE_URL 常量即可
  */
 // ✅ 线上：腾讯内网（iOA VPN 连上后可达）
-export const API_BASE_URL = 'https://walteryang-any3.devcloud.woa.com/mg-api';
+// nginx: /mg-api/ -> 127.0.0.1:8000/api/，所以客户端要补上 /v1
+export const API_BASE_URL = 'https://walteryang-any3.devcloud.woa.com/mg-api/v1';
 // 公网环境（之前的）
 // export const API_BASE_URL = 'https://www.gamerw.online/api/v1';
 // 本地开发（uvicorn --reload 跑在 127.0.0.1:8000）

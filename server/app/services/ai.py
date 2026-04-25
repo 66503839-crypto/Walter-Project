@@ -81,8 +81,14 @@ class MockProvider(BaseAIProvider):
             yield ch
 
 
-def get_ai_provider() -> BaseAIProvider:
-    provider = settings.ai_provider
+def get_ai_provider(name: str | None = None) -> BaseAIProvider:
+    """获取 AI Provider。
+
+    Args:
+        name: 显式指定 provider（qwen/deepseek/tokenplan/openai/mock），
+              为 None 时用 settings.ai_provider。
+    """
+    provider = name or settings.ai_provider
     if provider == "openai":
         if not settings.openai_api_key:
             logger.warning("OPENAI_API_KEY 未配置，回退到 mock")
@@ -124,3 +130,16 @@ def get_ai_provider() -> BaseAIProvider:
             settings.tokenplan_default_model,
         )
     return MockProvider()
+
+
+# 暴露给前端用的 provider 列表（含展示友好名和默认模型）
+AVAILABLE_PROVIDERS: list[dict] = [
+    {"id": "tokenplan", "name": "腾讯智能路由", "desc": "综合能力，默认"},
+    {"id": "qwen", "name": "通义千问", "desc": "阿里 Qwen-Plus"},
+    {"id": "deepseek", "name": "DeepSeek", "desc": "DeepSeek-Chat"},
+]
+
+
+def is_valid_provider(name: str) -> bool:
+    """检查 provider 名是否在允许切换的列表里。"""
+    return any(p["id"] == name for p in AVAILABLE_PROVIDERS)

@@ -15,6 +15,17 @@ class UserInfo(BaseModel):
     openid: str
     nickname: str | None = None
     avatar: str | None = None
+    preferred_provider: str | None = None
+
+
+class UserUpdateReq(BaseModel):
+    """用户偏好更新。"""
+
+    nickname: str | None = Field(None, max_length=64)
+    avatar: str | None = Field(None, max_length=512)
+    preferred_provider: str | None = Field(
+        None, description="qwen / deepseek / tokenplan，不在列表的会被拒绝"
+    )
 
 
 class LoginResp(BaseModel):

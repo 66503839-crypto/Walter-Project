@@ -12,6 +12,10 @@ class ChatMessage(BaseModel):
 class ChatReq(BaseModel):
     messages: list[ChatMessage] = Field(..., min_length=1, max_length=40)
     model: str | None = Field(None, description="留空则用服务端默认")
+    provider: str | None = Field(
+        None,
+        description="显式指定 provider（qwen/deepseek/tokenplan），留空则使用用户偏好或服务端默认",
+    )
     temperature: float = Field(0.7, ge=0.0, le=2.0)
     stream: bool = Field(False, description="是否流式返回")
 
@@ -20,3 +24,9 @@ class ChatResp(BaseModel):
     content: str
     model: str
     provider: str
+
+
+class ProviderInfo(BaseModel):
+    id: str
+    name: str
+    desc: str

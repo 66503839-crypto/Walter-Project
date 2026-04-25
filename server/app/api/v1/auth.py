@@ -70,6 +70,7 @@ async def wx_login(req: WxLoginReq, db: AsyncSession = Depends(get_db)):
                 openid=user.openid,
                 nickname=user.nickname,
                 avatar=user.avatar,
+                preferred_provider=user.preferred_provider,
             ),
         )
     )

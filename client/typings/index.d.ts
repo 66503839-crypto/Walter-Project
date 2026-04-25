@@ -15,5 +15,6 @@ declare namespace App {
     openid: string;
     nickname?: string;
     avatar?: string;
+    preferred_provider?: string;
   }
 }

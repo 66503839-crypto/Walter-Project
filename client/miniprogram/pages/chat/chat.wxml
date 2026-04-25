@@ -1,4 +1,22 @@
 <view class="chat-wrap">
+  <!-- 顶部：Provider 切换芯片 -->
+  <scroll-view
+    wx:if="{{providers.length > 0}}"
+    class="provider-bar"
+    scroll-x
+    enable-flex
+  >
+    <view
+      wx:for="{{providers}}"
+      wx:key="id"
+      class="chip {{currentProvider === item.id ? 'chip-active' : ''}}"
+      data-id="{{item.id}}"
+      bindtap="onSwitchProvider"
+    >
+      {{item.name}}
+    </view>
+  </scroll-view>
+
   <scroll-view
     class="chat-list"
     scroll-y

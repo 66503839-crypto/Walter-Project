@@ -7,9 +7,9 @@ from fastapi.responses import StreamingResponse
 from app.api.deps import get_current_user
 from app.core.config import settings
 from app.db.models.user import User
-from app.schemas.chat import ChatMessage, ChatReq, ChatResp
+from app.schemas.chat import ChatMessage, ChatReq, ChatResp, ProviderInfo
 from app.schemas.common import Resp
-from app.services.ai import get_ai_provider
+from app.services.ai import AVAILABLE_PROVIDERS, get_ai_provider
 
 router = APIRouter(prefix="/chat", tags=["AI 对话"])
 
@@ -32,9 +32,24 @@ def _with_system_prompt(messages: list[ChatMessage]) -> list[ChatMessage]:
     return [ChatMessage(role="system", content=SYSTEM_PROMPT), *messages]
 
 
+def _resolve_provider_name(req_provider: str | None, user: User) -> str | None:
+    """按优先级解析要用的 provider 名：请求 > 用户偏好 > 服务端默认。"""
+    return req_provider or user.preferred_provider or None
+
+
+@router.get(
+    "/providers",
+    response_model=Resp[list[ProviderInfo]],
+    summary="列出所有可选的 AI Provider",
+)
+async def list_providers(_: User = Depends(get_current_user)):
+    return Resp.ok([ProviderInfo(**p) for p in AVAILABLE_PROVIDERS])
+
+
 @router.post("", response_model=Resp[ChatResp], summary="AI 对话（非流式）")
-async def chat(req: ChatReq, _: User = Depends(get_current_user)):
-    provider = get_ai_provider()
+async def chat(req: ChatReq, user: User = Depends(get_current_user)):
+    provider_name = _resolve_provider_name(req.provider, user)
+    provider = get_ai_provider(provider_name)
     model = req.model or settings.ai_default_model
     msgs = _with_system_prompt(req.messages)
     content = await provider.chat(msgs, model, req.temperature)
@@ -42,13 +57,14 @@ async def chat(req: ChatReq, _: User = Depends(get_current_user)):
 
 
 @router.post("/stream", summary="AI 对话（流式 SSE）")
-async def chat_stream(req: ChatReq, _: User = Depends(get_current_user)):
+async def chat_stream(req: ChatReq, user: User = Depends(get_current_user)):
     """流式返回 Server-Sent Events：
 
     每行格式：`data: {"delta": "xxx"}\\n\\n`
     结束标志：`data: [DONE]\\n\\n`
     """
-    provider = get_ai_provider()
+    provider_name = _resolve_provider_name(req.provider, user)
+    provider = get_ai_provider(provider_name)
     model = req.model or settings.ai_default_model
     msgs = _with_system_prompt(req.messages)
 
