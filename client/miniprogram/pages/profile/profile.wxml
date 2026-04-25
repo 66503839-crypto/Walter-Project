@@ -1,10 +1,12 @@
 <view class="page">
   <view class="profile card" wx:if="{{user}}">
     <image
+      wx:if="{{user.avatar}}"
       class="avatar"
-      src="{{user.avatar || '/images/default-avatar.png'}}"
+      src="{{user.avatar}}"
       mode="aspectFill"
     />
+    <view wx:else class="avatar avatar-placeholder">👤</view>
     <view class="info">
       <view class="nickname">{{user.nickname || '微信用户'}}</view>
       <view class="muted">ID: {{user.id}}</view>

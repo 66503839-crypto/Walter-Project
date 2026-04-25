@@ -113,4 +113,14 @@ def get_ai_provider() -> BaseAIProvider:
             settings.qwen_base_url,
             "qwen-plus",
         )
+    if provider == "tokenplan":
+        if not settings.tokenplan_api_key:
+            logger.warning("TOKENPLAN_API_KEY 未配置，回退到 mock")
+            return MockProvider()
+        return OpenAICompatProvider(
+            "tokenplan",
+            settings.tokenplan_api_key,
+            settings.tokenplan_base_url,
+            settings.tokenplan_default_model,
+        )
     return MockProvider()

@@ -39,7 +39,7 @@ class Settings(BaseSettings):
     wechat_api_base: str = "https://api.weixin.qq.com"
 
     # ---------- AI ----------
-    ai_provider: Literal["openai", "deepseek", "qwen", "mock"] = "mock"
+    ai_provider: Literal["openai", "deepseek", "qwen", "tokenplan", "mock"] = "mock"
     ai_default_model: str = "gpt-4o-mini"
 
     openai_api_key: str = ""
@@ -50,6 +50,11 @@ class Settings(BaseSettings):
 
     qwen_api_key: str = ""
     qwen_base_url: str = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+
+    # 腾讯云 TokenPlan（OpenAI 兼容协议）
+    tokenplan_api_key: str = ""
+    tokenplan_base_url: str = "https://api.lkeap.cloud.tencent.com/plan/v3"
+    tokenplan_default_model: str = "tc-code-latest"
 
     # ---------- CORS ----------
     cors_origins: str = "http://localhost:3000,https://servicewechat.com"

@@ -1,0 +1,73 @@
+# =================================================================
+# 内网部署版：DevCloud CVM（walteryang-any3.devcloud.woa.com）
+# -----------------------------------------------------------------
+# 差异说明（相比 docker-compose.yml）：
+#  1. 没有 nginx 容器（宿主机 Nginx 已存在且由外层管理）
+#  2. app 服务 ports: "127.0.0.1:8000:8000"，只暴露到本机 loopback
+#     （给宿主机 Nginx 反代，不对外直接开 8000）
+#  3. volumes 绑定到 /data/minigamer/*，走数据盘
+#  4. 取消了 web network（没有 nginx 容器）
+#  5. env_file 指向 /data/minigamer/.env（数据盘上的配置，代码目录里不放）
+#
+# 启动：
+#   cd /data/minigamer/app/deploy
+#   docker compose -f docker-compose.internal.yml up -d --build
+# =================================================================
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: minigamer-pg
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      TZ: Asia/Shanghai
+    volumes:
+      - /data/minigamer/pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+  redis:
+    image: redis:7-alpine
+    container_name: minigamer-redis
+    restart: always
+    volumes:
+      - /data/minigamer/redis-data:/data
+    networks:
+      - internal
+
+  app:
+    build:
+      context: ../server
+      dockerfile: Dockerfile
+    container_name: minigamer-app
+    restart: always
+    env_file:
+      - /data/minigamer/.env
+    environment:
+      APP_ENV: prod
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - internal
+    # 只暴露到宿主机 loopback：宿主机 Nginx 可访问 127.0.0.1:8000，
+    # 但 8000 端口不会对外网/内网其他机器开放
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - /data/logs/minigamer:/app/logs
+
+networks:
+  internal:

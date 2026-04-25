@@ -10,6 +10,14 @@
   background: #eee;
   flex-shrink: 0;
 }
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60rpx;
+  background: linear-gradient(135deg, #8ec5fc, #e0c3fc);
+  color: #fff;
+}
 .info {
   flex: 1;
   overflow: hidden;

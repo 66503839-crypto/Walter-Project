@@ -29,13 +29,16 @@ AsyncSessionLocal = async_sessionmaker(
 
 
 async def init_db() -> None:
-    """启动时建表（仅开发环境，生产用 Alembic）。"""
+    """启动时自动建表（幂等，已存在的表会被跳过）。
+
+    注：这是简化方案，适合单机 + 少量模型变更的场景。
+    生产规模增大或频繁改 schema 时，切换到 Alembic 管理 migration。
+    """
     from app.db.base import Base  # noqa: WPS433
 
-    if settings.app_env == "dev":
-        async with engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
-        logger.info("📦 数据库表已创建 (dev 模式)")
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    logger.info(f"📦 数据库表已就绪 (env={settings.app_env})")
 
 
 async def close_db() -> None:
